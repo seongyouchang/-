@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--    css추가-->
+    <link rel="stylesheet" href="/static/css/request.css">
+
+
+    <script>
+        $(document).ready(function(){
+            $("#submit").click(function(){
+                if($("#user_id").val().length==0) {
+                    alert("id를 입력하세요");
+                    $("#user_id").focus();
+                    return false;
+                }
+                if($("#mak_name").val().length==0) {
+                    alert("막걸리명을 입력하세요");
+                    $("#mak_name").focus();
+                    return false;
+                }
+                if($("#request").val().length==0) {
+                    alert("요청사항을 입력하세요");
+                    $("#request").focus();
+                    return false;
+                }
+            });
+        });
+
+        function request_button() {
+            let user_id = $('#user_id').val()
+            let mak_name = $('#mak_name').val()
+            let mak_file = $('#mak_file').val()
+            let request = $('#request').val()
+            $.ajax({
+                type: "POST",
+                url: "/request",
+                data: {userid_give:user_id,makname_give:mak_name,makfile_give:mak_file,request_give:request},
+                success: function (response) {
+                    alert(response["msg"])
+                    location.href = "/";
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div class="container contact">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header">
+                    <div class="back-img">
+                    <img src="../static/back_icon.png" alt="backbutton" width="80px" height="50px">
+                    </div>
+                    <div  class="logo-img" >
+                        <img src="../static/logo-removebg-preview.png" alt="logo" height="130px">
+                    </div>
+
+                </div>
+                <div class="mid-container">
+                    <div class="title_box">
+                        <h2 class="title">새로운 막걸리를 추천해주세요!</h2>
+                    </div>
+                    <div class="content_wrap">
+                        <div class="content">
+                            <input id="user_id" type="text" placeholder="아이디를 입력하세요."/>
+                        </div>
+                        <div id="input_name" class="content">
+                            <input id="mak_name" type="text" placeholder="막걸리명을 입력하세요."/>
+                            <input id="mak_file" type="file" name="reviewImg" id="reviewImageFileOpenInput" accept="image/png, image/jpeg">
+                        </div>
+                        <div class="content">
+                            <textarea id="request" class="input_request" type="text" placeholder="요청사항을 적어주세요."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <button onclick="request_button()" id="submit" type="button" class="btn btn-info" >제출</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

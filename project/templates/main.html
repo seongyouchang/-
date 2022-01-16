@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:position="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="../static/css/main.css" rel="stylesheet" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <!--    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: blanchedalmond;
+        }
+
+        .contact {
+            padding: 4%;
+            height: 400px;
+        }
+
+        .col-md-12 {
+            /*height 주석 처리 하세요*/
+            height: 1000px;
+            background: #fff;
+            padding: 3%;
+            border-radius: 0.5rem;
+            box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.1);
+            width: 1200px;
+        }
+
+
+    </style>
+    <!--    <link rel="stylesheet" href="../../../Desktop/css-only-horizontal-parallax-gallery/src/style.css">-->
+
+    <script>
+        //막거리 정보 아이디 전역변수 초기값 설정
+        let number_id = 0
+
+        $(document).ready(function () {
+            show_makgeolli();
+
+
+            //막걸리 정보를 부르는 함수수
+           document.getElementById('food1').src = "../static/img/num" + random_food(1, 5) + ".jpeg"
+            info_right();
+             console.log(document.querySelectorAll('.right').length);
+             for (var i = 0 ; i < document.querySelectorAll('.right').length; i++ ){
+                 document.querySelectorAll('.right')[i].addEventListener('click',info_right)
+             }
+             for (var i = 0 ; i < document.querySelectorAll('.left').length; i++ ){
+                 document.querySelectorAll('.left')[i].addEventListener('click',info_left)
+             }
+        });
+
+
+        function show_makgeolli() {
+            $.ajax({
+                type: "GET",
+                url: "/main",
+                data: {},
+                success: function (response) {
+                    let rows = response['makgeollis']
+                    for (let i = 0; i < rows.length; i++) {
+                        let mak_img_url = rows[i]['mak_img_url'].split('/')[3]
+                        console.log(rows[i]['mak_id'])
+                        // let temp_html = ``'<li className="slideitem">\n' +
+                        // 		'\t\t\t\t\t\t\t<a>\n' +
+                        // 		'\t\t\t\t\t\t\t\t<div className="textbox">\n' +
+                        // 		'\t\t\t\t\t\t\t\t\t<h1 id="text_1">막걸리 추천</h1>\n' +
+                        // 		'\t\t\t\t\t\t\t\t\t<img id="mak_img" src="../static/mak_img/${mak_img_url}">\n' +
+                        // 		'\n' +
+                        // 		'\t\t\t\t\t\t\t\t</div>\n' +
+                        // 		'\t\t\t\t\t\t\t</a>\n' +
+                        // 		'\t\t\t\t\t\t</li>'
+
+                        let temp_html = `<li className="slideitem">
+								\t\t\t\t\t\t\t<a>
+
+								\t\t\t\t\t\t\t\t<div className="textbox">
+								\t\t\t\t\t\t\t\t\t<h1 id="text_2" >막걸리 추천</h1>
+													<img id="${rows[i]['mak_id']}" class ="mak_img" src="../static/mak_img/${mak_img_url}" onclick="mak_page(${rows[i]['mak_id']})">
+
+								\t\t\t\t\t\t\t\t</div>
+								\t\t\t\t\t\t\t</a>
+								\t\t\t\t\t\t</li>`
+                        $('#detail-1').append(temp_html)
+
+                    }
+                }
+            })
+        }
+
+        function login_button() {
+            location.href = "/login";
+        }
+
+        function join_button() {
+            location.href = "/join";
+        }
+
+
+
+        //해당 막걸리 페이지로 이동
+        function mak_page(mak_id) {
+            location.href = '/comment?mak_id=' + mak_id
+        }
+
+        //안주번호 랜덤 함수
+        function random_food(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+
+        //막걸리 페이지 오른쪽 버튼 누를때
+        function info_right(){
+            number_id = number_id + 10;
+                        if (number_id > 50) {
+                            number_id = 10;
+                        }
+            $.ajax({
+                url: '/main',
+                type: 'post',
+                data: {'mak_id': number_id},
+                success: function (response) {
+                    console.log(response['result']['mak_info']['전통주명']);
+                    $('#mak_info_li').empty()
+                    let temp_html = `
+                                     <ul>
+                                        <li>${response['result']['mak_info']['전통주명']}</li>
+                                        <li>별점 : ${'⭐'.repeat(parseInt(response['result']['mak_star_avg']))}</li>
+                                    </ul>
+                    `
+                    $('#mak_info_li').append(temp_html);
+                    document.getElementById('food1').src = "../static/img/num" + random_food(1, 5) + ".jpeg";
+                },
+                error: function() {
+                    console.log('실패')
+                }
+            });
+        }
+        //막걸리 페이지 왼쪽 버튼 누를때
+        function info_left(){
+             number_id = number_id - 10;
+                        if (number_id < 10) {
+                            number_id = 50;
+                        }
+            $.ajax({
+                url: '/main',
+                type: 'post',
+                data: {'mak_id': number_id},
+                success: function (response) {
+                    console.log(response['result']['mak_info']['전통주명']);
+                    $('#mak_info_li').empty()
+                    let temp_html = `
+                                     <ul>
+                                        <li>${response['result']['mak_info']['전통주명']}</li>
+                                        <li>별점 : ${'⭐'.repeat(parseInt(response['result']['mak_star_avg']))}</li>
+                                    </ul>
+                    `
+                    $('#mak_info_li').append(temp_html);
+                    document.getElementById('food1').src = "../static/img/num" + random_food(1, 5) + ".jpeg";
+                },
+                error: function() {
+                    console.log('실패')
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="container contact">
+    <div class="row">
+        <div class="col-md-12" >
+            <div style="text-align: center;"/>
+            <div id="header_box"><img src="../static/img/logo-removebg-preview.png" alt="">
+            </div>
+        </div>
+        <div id="login_info" class="login-box">
+            <button type="button" class="btn btn-light" onclick="login_button()"><h2>로그인</h2></button>
+            <button type="button" class="btn btn-light" onclick="join_button()"><h2>회원가입</h2></button>
+        </div>
+        <div>
+            <div id="camera-icon"><a href="https://www.naver.com/" target="_blank">
+                <img src="../static/img/camera2.png" width="80" height="80" alt="">
+            </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <input type="radio" name="slide" id="slide01" checked>
+    <input type="radio" name="slide" id="slide02">
+    <input type="radio" name="slide" id="slide03">
+    <input type="radio" name="slide" id="slide04">
+    <input type="radio" name="slide" id="slide05">
+    <div class="slidewrap">
+        <ul class="slidelist" id="detail-1">
+            <!-- 슬라이드 영역 -->
+            <li class="slideitem">
+                <a>
+                    <div class="textbox">
+                        <h1 id="text_1"></h1>
+                    </div>
+                </a>
+            </li>
+            <li class="slideitem">
+                <a>
+                    <div class="textbox">
+                        <h1 id="text_2"></h1>
+                    </div>
+                </a>
+            </li>
+            <li class="slideitem">
+                <a>
+                    <div class="textbox">
+                        <h1 id="text_3">막걸리 추천</h1>
+                    </div>
+                </a>
+            </li>
+            <li class="slideitem">
+                <a>
+                    <div class="textbox">
+                        <h1 id="text_4">막걸리 추천</h1>
+                    </div>
+                </a>
+            </li>
+            <li class="slideitem">
+                <a>
+                    <div class="textbox">
+                        <h1 id="text_5">막걸리 추천</h1>
+                    </div>
+                </a>
+            </li>
+            <li class="slideitem">
+                <a>
+                    <div class="textbox">
+                        <h3>두번째 슬라이드</h3>
+                        <p>두번째 슬라이드 입니다.</p>
+                    </div>
+                    <img src="../static/img/slide.jpg">
+                </a>
+            </li>
+
+            <!-- 좌,우 슬라이드 버튼 -->
+            <div class="slide-control">
+                <div>
+                    <label for="slide05" class="left"></label>
+                    <label for="slide02" class="right"></label>
+                </div>
+                <div>
+                    <label for="slide01" class="left"></label>
+                    <label for="slide03" class="right"></label>
+                </div>
+                <div>
+                    <label for="slide02" class="left"></label>
+                    <label for="slide04" class="right"></label>
+                </div>
+                <div>
+                    <label for="slide03" class="left"></label>
+                    <label for="slide05" class="right"></label>
+                </div>
+                <div>
+                    <label for="slide04" class="left"></label>
+                    <label for="slide01" class="right"></label>
+                </div>
+            </div>
+        </ul>
+        <!-- 페이징 -->
+        <ul class="slide-pagelist">
+            <li><label for="slide01"></label></li>
+            <li><label for="slide02"></label></li>
+            <li><label for="slide03"></label></li>
+            <li><label for="slide04"></label></li>
+            <li><label for="slide05"></label></li>
+        </ul>
+    </div>
+
+
+</div>
+
+</div>
+
+<div class="left-box">
+    <h1 id="left_box_text">안주추천</h1>
+    <img id="food1" >
+</div>
+<div class="light-box">
+    막걸리 정보
+    <div id="mak_info_li">
+
+    </div>
+</div>
+
+</body>
+
+</html>

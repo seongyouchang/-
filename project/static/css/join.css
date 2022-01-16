@@ -1,0 +1,83 @@
+
+* {
+    /*            border: 1px solid black;*/
+}
+
+body {
+    background-color: blanchedalmond;
+}
+
+.contact {
+    padding: 4%;
+}
+
+.col-md-12 {
+    background: #fff;
+    padding: 3%;
+    border-radius: 0.5rem;
+    box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.1);
+    width: 1200px;
+}
+
+p {
+    font-size: 5em;
+    font-family: 'East Sea Dokdo', cursive;
+    margin-right: 30%;
+    float: left;
+}
+
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-img{
+            display:flex;
+            justify-content: center;
+            width:80%;
+        }
+
+.wrap{
+    margin: 3% 20% 3% 20%;
+}
+
+#check{
+    background-color: #F3C892;
+    border: 0px;
+    margin-left: 2%;
+}
+
+#birth_input{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    width: 30%;
+    height: 10%;
+}
+
+.email{
+    width: 30%;
+}
+
+#select_email{
+    margin-left: 1%;
+    width: 30%;
+}
+
+#buttons{
+    display: flex;
+    justify-content: center;
+}
+
+#btn_join, #btn_cancel{
+    margin: 2%;
+    background-color: antiquewhite;
+    font-size: 19px;
+    font-weight: bold;
+    border: 0px;
+}
+
+
+#btn_join:hover, #btn_cancel:hover{
+    background-color: #F3C892;
+}

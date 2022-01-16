@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css"
+          integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js"
+            integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <link rel="stylesheet" href="/static/css/login.css"/>
+    <script>
+
+        //thml 문서가 불러와지면 실행되는 구문
+        $(document).ready(function () {
+            //로그인 페이지 들어오면 쿠키 만료
+            $.removeCookie('mytoken');
+            //만약에 url 파라미터에 msg 값이 있으면 불러오는 로직
+            var msg = getParameterByName('msg')
+            if (msg){
+                alert(msg)
+            }
+        });
+
+        function login() {
+            let id = $('#id').val()
+            let password = $('#password').val()
+            $.ajax({
+                type: 'POST',
+                url: '/login',
+                data: {id_give: id, password_give: password},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $.cookie('mytoken', response['token']);
+                        alert('로그인 완료!')
+                        window.location.href = '/'
+                    } else {
+                        alert(response['msg'])
+                    }
+
+                }
+            });
+        }
+
+        //url 파라미터 가져오는 함수
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+    </script>
+</head>
+<body>
+<div class="container contact">
+    <div class="row">
+        <div class="col-md-12">
+            <div class='logo'>
+                <img src="/static/logo-removebg-preview.png">
+            </div>
+            <div class="form-floating mb-3">
+                <p>아이디</p>
+                <input type="text" class="form-control" id="id" placeholder="아이디를 입력하세요">
+            </div>
+            <div class="form-floating">
+                <p>비밀번호</p>
+                <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력하세요">
+            </div>
+            <div class='bt'>
+                <button onclick="login()" class="btn btn-block btn-warning">로그인</button>
+                <p>계정이 없으신가요?<a href="/join">회원가입</a></p>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

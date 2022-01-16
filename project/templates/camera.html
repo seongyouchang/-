@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<style>
+    body {
+        background-color: blanchedalmond;
+    }
+
+    .contact {
+        padding: 4%;
+        height: 400px;
+    }
+
+    .col-md-12 {
+        /*height 주석 처리 하세요*/
+        /*height: 1000px;*/
+        background: #fff;
+        padding: 3%;
+        border-radius: 0.5rem;
+        box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.1);
+        max-width: 1200px;
+    }
+
+    .col-md-12 .header {
+        width: 100%;
+        height: 10%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .col-md-12 .header #back {
+        width: 13%;
+    }
+
+    .col-md-12 .header #logo {
+        width: 35%;
+        margin-right: 32%;
+    }
+
+    .col-md-12 .webcam {
+        margin: 3%;
+    }
+
+    .col-md-12 .predict {
+        text-align: center;
+    }
+
+    .col-md-12 .bt {
+        display: flex;
+        justify-content: space-around;
+    }
+    .col-md-12 .request{
+        margin-top: 3%;
+        text-align: center;
+    }
+</style>
+<body>
+<div class="container contact">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="header">
+                <img onclick="window.history.back()" id='back' src="back_icon.png">
+                <img id='logo' src="ddabong_logo.png">
+                <!--<button type="button" class="btn btn-warning">추가요청</button>-->
+            </div>
+            <div class='webcam'>
+                <video
+                        width="100%"
+                        autoplay
+                        playsinline
+                        muted
+                        id="player"
+                ></video>    <!-- 이 video tag를 통해 webcam feed를 재생합니다. -->
+                <script>
+                    // video tag의 DOM element를 player로 지정합니다.
+                    var player = document.getElementById("player");
+                    // 웹캠 사용권한이 승인되는 경우 스트리밍 영상을 player의 재생대상으로 지정
+                    var handleSuccess = function (stream) {
+                        player.srcObject = stream;
+                    };
+                    navigator.mediaDevices.getUserMedia({video: true}).then(handleSuccess);
+                    // 현재 사용중인 브라우저 객체(navigator)의 mediaDevices 인터페이스를
+                    // 이용하여 사용자의 미디어 입력장치 사용권한을 받습니다.
+                </script>
+            </div>
+            <div class='predict'>
+                <p>확인중...</p>
+            </div>
+            <div class='bt'>
+                <button type="button" class="btn btn-warning">알아보기</button>
+                <button type="button" onclick="location.href='request.html'" class="btn btn-warning">요청하기</button>
+                <button type="button" class="btn btn-warning">다시하기</button>
+            </div>
+            <div class='request'>
+                <p>확인이 안되시나요? 막걸리를 추가 요청해주세요!</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

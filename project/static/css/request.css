@@ -1,0 +1,82 @@
+ *{
+            /*border:10px solid black;*/
+        }
+
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            background-color: blanchedalmond;
+        }
+        .contact {
+            padding: 4%;
+            height: 400px;
+        }
+        .col-md-12 {
+            /*height 주석 처리 하세요*/
+            /*height: 900px;*/
+            background: #fff;
+            padding: 3%;
+            border-radius: 0.5rem;
+            box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.1);
+            width: 1200px;
+
+        }
+        .header {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-img{
+            display:flex;
+            justify-content: center;
+            width:80%;
+        }
+        .mid-container{
+            height:70%;
+            /*flex-direction:column;*/
+        }
+        .title_box{
+            padding:10px 60px;
+        }
+        .title{
+            font-family: 'GmarketSansMedium';
+            text-align: center;
+        }
+        .content_wrap{
+            border-radius: 20px;
+            /*border:2px solid gray;*/
+            background-color: blanchedalmond;
+            height:80%;
+            margin: 20px 100px;
+            padding:30px 80px;
+            display:flex;
+            flex-direction:column;
+            /*align-content: space-evenly;*/
+
+        }
+        .content{
+            margin:5px 0px;
+        }
+        #input_name{
+            display:flex;
+            flex-direction: column;
+        }
+        input{
+            width:100%;
+            height: 40px;
+        }
+        .input_request{
+            width:100%;
+            height:150px;
+            /*text-align:center;*/
+        }
+        .footer{
+            margin-top:10px ;
+            display:flex;
+            justify-content: center;
+        }

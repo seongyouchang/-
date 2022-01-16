@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css"
+          integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js"
+            integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/comment.css">
+</head>
+<script>
+
+    $(document).ready(function () {
+        //뒤로가기 버튼
+        document.getElementById('back_btn').addEventListener('click', back);
+    });
+
+
+    //뒤로가기 함수
+    function back() {
+        window.history.back();
+    }
+
+    function main() {
+        location.href = '/';
+    }
+
+    function getCookie(key) {
+        key = new RegExp(key + '=([^;]*)'); // 쿠키들을 세미콘론으로 구분하는 정규표현식 정의
+        return key.test(document.cookie) ? unescape(RegExp.$1) : ''; // 인자로 받은 키에 해당하는 키가 있으면 값을 반환
+    }
+
+    console.log(getCookie('mytoken'))
+
+
+</script>
+<body>
+
+<p></p>
+<div class="container contact">
+    <!--    헤더 메뉴 바 -->
+    <div class="row header_container">
+        <div class="col-md-1 header" id="back_btn">
+            <img src="../static/back_icon.png" alt="back">
+        </div>
+        <div class="col-md-10 header" onclick="main()">
+            <p class='logo'> 따봉이쥬 막걸리 </p>
+        </div>
+        <div class="col-md-1 header">
+        </div>
+    </div>
+    <!-- 본문-->
+    <div class="row body_container">
+        <div class="col-md-10 section_a">
+            <div id="img_info">
+                <div class="col-md-4 img">
+                    <img src="{{ mak['mak_img_url'] }}" alt="막걸리">
+                </div>
+                <div class="col-md-6 info">
+                    <ul>
+                        <li><strong>전통주명</strong> : {{ mak['mak_info']['전통주명'] }}</li>
+                        <li><strong>도수</strong> : {{ mak['mak_info']['도수'] }}</li>
+                        <li><strong>규격</strong> : {{ mak['mak_info']['규격'] }}</li>
+                        <li><strong>주원료</strong> : {{ mak['mak_info']['주원료'] }}</li>
+                        <li><strong>제조사</strong> : {{ mak['mak_info']['제조사'] }}</li>
+                    </ul>
+                    <div class="col-md-12">
+                        <p><strong>추천안주</strong></p>
+                        <p>감자전,파전 아 먹고 싶다 </p>
+                    </div>
+                </div>
+            </div>
+            <div id="star_score_avg" class="col-md-12">
+                <p>평균 별점 : <span>{% for x in range(avg|int) %}⭐{% endfor %}</span></p>
+            </div>
+
+        </div>
+        <div class="col-md-10 section_b">
+            <ul id=comment_box>
+                <!--반복 구문-->
+                {% for i in comments %}
+                {% if i['comment_user_id'] == user_id %}
+                <li class="col-md-12">
+                    <div class="col-md-8"><span>{{ i['comment_user_id'] }}</span> : {{ i['comment'] }}</div>
+                    <!--                    별 찍기는 for문을 통해 반복합니다 진자로 받아오는 변수는 string 이며 casting 은 |int 이렇게 합니다-->
+                    <div class="col-md-3">{% for x in range(i['comment_star_score']|int) %}⭐{% endfor %}</div>
+                    <a href="/comment/delete?comment_id={{ i['comment_id'] }}&mak_id={{ mak['mak_id'] }}"
+                       class="col-md-1">X</a>
+                </li>
+                {% else %}
+                <li class="col-md-11">
+                    <div class="col-md-8"><span>{{ i['comment_user_id'] }}</span> : {{ i['comment'] }}
+                    </div>
+                    <div class="col-md-3">{% for x in range(i['comment_star_score']|int) %}⭐{% endfor %}</div>
+                </li>
+                {% endif %}
+
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <!--    푸터 폼 부분-->
+    <div class="row footer_container">
+        <!--폼태그 (태그내의 인풋 등 VAL값 지정)-->
+        <form action="/comment" method="post" class="col-md-12">
+            <div class="col-md-12 text">
+                <!--required 속성 NULL 값을 허용하지 않음-->
+                <textarea name="comment" id="comment" class="form-control col-md-8" rows="3"
+                          placeholder="리뷰와 별점을 남겨주세요." required></textarea>
+                <div class="col-md-2">
+                    <select name="star_score" id="star_score" class="selectpicker">별점
+                        <option value="5">⭐⭐⭐⭐⭐</option>
+                        <option value="4">⭐⭐⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="1">⭐</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 button">
+                <input type="submit" class="btn btn-warning btn-lg col-md-2" value="등록">
+                <input type="reset" class="btn btn-warning btn-lg col-md-2">
+                <input type="hidden" name="comment_user_id" value="{{ user_id }}">
+                <input type="hidden" name="mak_ref_id" value="{{ mak_id }}">
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

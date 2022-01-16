@@ -1,0 +1,40 @@
+        body {
+            background-color: blanchedalmond;
+        }
+
+        .contact {
+            padding: 4%;
+            height: 400px;
+        }
+
+        .col-md-12 {
+            background: #fff;
+            padding: 3%;
+            border-radius: 0.5rem;
+            box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.1);
+            width: 1200px;
+        }
+
+        .col-md-12 .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .col-md-12 .logo img {
+            width: 60%;
+        }
+
+
+
+        .col-md-12 .wrap .col-md-8 img {
+            width: 80%;
+        }
+
+        .col-md-12 .bt{
+            margin-top: 3%;
+        }
+        .col-md-12 .bt p{
+            margin-top: 3%;
+            text-align: center;
+        }
