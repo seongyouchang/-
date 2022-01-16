@@ -9,7 +9,6 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 </head>
 <style>
     body {
@@ -48,7 +47,11 @@
     }
 
     .col-md-12 .webcam {
-        margin: 3%;
+        margin-top: 5%;
+        margin-bottom: 4%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .col-md-12 .predict {
@@ -59,7 +62,8 @@
         display: flex;
         justify-content: space-around;
     }
-    .col-md-12 .request{
+
+    .col-md-12 .request {
         margin-top: 3%;
         text-align: center;
     }
@@ -69,32 +73,17 @@
     <div class="row">
         <div class="col-md-12">
             <div class="header">
-                <img onclick="window.history.back()" id='back' src="back_icon.png">
-                <img id='logo' src="ddabong_logo.png">
+                <img onclick="window.history.back()" id='back' src="/static/back_icon.png">
+                <img id='logo' src='/static/logo-removebg-preview.png'>
                 <!--<button type="button" class="btn btn-warning">추가요청</button>-->
             </div>
             <div class='webcam'>
-                <video
-                        width="100%"
-                        autoplay
-                        playsinline
-                        muted
-                        id="player"
-                ></video>    <!-- 이 video tag를 통해 webcam feed를 재생합니다. -->
-                <script>
-                    // video tag의 DOM element를 player로 지정합니다.
-                    var player = document.getElementById("player");
-                    // 웹캠 사용권한이 승인되는 경우 스트리밍 영상을 player의 재생대상으로 지정
-                    var handleSuccess = function (stream) {
-                        player.srcObject = stream;
-                    };
-                    navigator.mediaDevices.getUserMedia({video: true}).then(handleSuccess);
-                    // 현재 사용중인 브라우저 객체(navigator)의 mediaDevices 인터페이스를
-                    // 이용하여 사용자의 미디어 입력장치 사용권한을 받습니다.
-                </script>
+                <video id="video" width="100%"   autoplay></video>
+                <canvas id="canvas" width="1200px" height="700px" ></canvas>
             </div>
+
             <div class='predict'>
-                <p>확인중...</p>
+                <p>확인중...{{ result }}</p>
             </div>
             <div class='bt'>
                 <button type="button" class="btn btn-warning">알아보기</button>
@@ -104,8 +93,57 @@
             <div class='request'>
                 <p>확인이 안되시나요? 막걸리를 추가 요청해주세요!</p>
             </div>
+
         </div>
     </div>
 </div>
+
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    var video = document.getElementById('video');
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
+            //video.src = window.URL.createObjectURL(stream);
+            video.srcObject = stream;
+            console.log(stream)
+            video.play();
+        });
+    }
+    setInterval(myTimer, 5000);
+
+    function myTimer() {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d'); //2D , 3D 냐??
+        var video = document.getElementById('video');
+        ctx.drawImage(video, 0, 0) //이미지를 원래 크기로 삽입
+        // ctx.translate(video, 0) //translate( x,y ) 객체를 x와 y만큼 이동시킵니다.
+        document.getElementById("canvas").style = "display:none;" //캔버스 안보이게
+
+        data = canvas.toDataURL("image/JPEG"); //캔버스 이미지를 base64로 변환
+        console.log(data)
+        $.ajax({
+            type: "POST",
+            url: "/camera_data",
+            data: {'data':data},
+            // contentType: false,
+            // processData: false,
+            success: function (data) {
+                if (data.success) {
+                    // alert('Your file was successfully uploaded!');
+                } else {
+                    // alert('There was an error uploading your file!');
+                }
+            },
+            error: function (data) {
+                console.log('There was an error uploading your file!');
+            }
+        }).done(function () {
+            console.log("Sent");
+        });
+    }
+</script>
+
+
 </html>
