@@ -284,4 +284,4 @@ if __name__ == '__main__':
     # ssl_context.load_cert_chain(certfile='private.pem', keyfile='private.pem', password='java1234c')
     app.run('0.0.0.0', port=5000, debug=True)
 
-# '0.0.0.0', port=5000, debug=True ,
+'0.0.0.0', port=5000, debug=True ,
