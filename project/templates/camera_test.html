@@ -9,6 +9,7 @@
     <body>
         <video id="video" width="640" height="480" autoplay></video>
         <canvas id="canvas" width="300" height="300"></canvas>
+        <div><h1 id="object"></h1></div>
     </body>
 
 <!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"-->
@@ -27,7 +28,7 @@
             });
     }
 
-    setInterval(myTimer, 5000);
+    setInterval(myTimer, 1000);
 
     function myTimer() {
         var canvas = document.getElementById('canvas');
@@ -49,6 +50,8 @@
             // processData: false,
             success: function (response) {
                 console.log(response)
+                $('#object').empty();
+                $('#object').append(`${response['msg']}`);
                 // if (data.success) {
                 //     //alert('Your file was successfully uploaded!');
                 // } else {

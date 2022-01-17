@@ -78,12 +78,12 @@
                 <!--<button type="button" class="btn btn-warning">추가요청</button>-->
             </div>
             <div class='webcam'>
-                <video id="video" width="100%"   autoplay></video>
-                <canvas id="canvas" width="1200px" height="700px" ></canvas>
+                <video id="video" width="100%" autoplay></video>
+                <canvas id="canvas" width="1200px" height="700px"></canvas>
             </div>
 
             <div class='predict'>
-                <p>확인중...{{ result }}</p>
+                <p id="object">확인중...</p>
             </div>
             <div class='bt'>
                 <button type="button" class="btn btn-warning">알아보기</button>
@@ -111,7 +111,7 @@
             video.play();
         });
     }
-    setInterval(myTimer, 5000);
+    setInterval(myTimer, 1000);
 
     function myTimer() {
         var canvas = document.getElementById('canvas');
@@ -125,16 +125,18 @@
         console.log(data)
         $.ajax({
             type: "POST",
-            url: "/camera_data",
-            data: {'data':data},
+            url: "/camera_test",
+            data: {'data': data},
             // contentType: false,
             // processData: false,
             success: function (data) {
-                if (data.success) {
-                    // alert('Your file was successfully uploaded!');
-                } else {
-                    // alert('There was an error uploading your file!');
-                }
+                 $('#object').empty();
+                    $('#object').append(`${data['msg']}`);
+                // if (data.success) {
+                //
+                // } else {
+                //     // alert('There was an error uploading your file!');
+                // }
             },
             error: function (data) {
                 console.log('There was an error uploading your file!');

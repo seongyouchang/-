@@ -22,7 +22,7 @@ from tensorflow.keras.models import Model
 
 SECRET_KEY = '333'
 app = Flask(__name__)
-
+model = tf.keras.models.load_model('model/model.h5')
 # MongoDB 연결
 from pymongo import MongoClient
 
@@ -225,6 +225,11 @@ def request_post():
     db.Recommend.insert_one(doc)
     return jsonify({'msg': userid + "님의 추천막걸리가 요청되었습니다"})
 
+@app.route("/camera", methods=['GET'])
+def camera():
+
+    return render_template('camera.html')
+
 
 # 지울것
 @app.route("/camera_test", methods=['GET'])
@@ -240,32 +245,15 @@ def test_camera_test():
     # print("Keras Version", keras.__version__)
 
     # print("TF Version", tf.__version__)
-    model = tf.keras.models.load_model('model/model.h5')
+
     # model.summary()
     data = request.form.get('data')
-    print("이얍 받아라 나의 데이터를")
+    # print("이얍 받아라 나의 데이터를")
     data = data.split(',')[1]
     imgdata = base64.b64decode(data)
-    print("디코더")
-    vidi = stringToRGB(imgdata)
-
-    print(vidi.shape)
-    prediction = model.predict(vidi)
-    print(prediction)
-    label = np.array([['albam', 'gyeongju', 'jangsu', 'jipyeong', 'sosungju']])
-    print(label[prediction[:]>0.7])
-
-    # img = cv2.imread('static/mak_img/10.jpg', cv2.IMREAD_COLOR)
-    # cv2.imshow('image', img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows
-    return jsonify({'msg': "요청되었습니다"})
-
-
-def stringToRGB(base64_string):
-    # imgdata = base64.b64decode(str(base64_string))
+    # print("디코더")
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-    image = Image.open(io.BytesIO(base64_string))
+    image = Image.open(io.BytesIO(imgdata))
     size = (224, 224)
     image = ImageOps.fit(image, size, Image.ANTIALIAS)
     image_array = np.asarray(image)
@@ -273,9 +261,17 @@ def stringToRGB(base64_string):
     normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
     # Load the image into the array
     data[0] = normalized_image_array
+    # print(vidi.shape)
+    prediction = model.predict(data)
+    print(np.around(prediction,8))
+    label = np.array([['albam', 'gyeongju', 'jangsu', 'jipyeong', 'sosungju']])
+    print(label[prediction[:] > 0.7])
 
-    return data
-
+    # img = cv2.imread('static/mak_img/10.jpg', cv2.IMREAD_COLOR)
+    # cv2.imshow('image', img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows
+    return jsonify({'msg': label[prediction[:] > 0.7][0]})
 
 # 여기까지 지울것
 
