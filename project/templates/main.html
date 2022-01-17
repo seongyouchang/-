@@ -42,6 +42,30 @@
         //막거리 정보 아이디 전역변수 초기값 설정
         let number_id = 0
 
+        	$(document).ready(function () {
+			show_makgeolli()
+
+			function getCookie(key) {
+				key = new RegExp(key + '=([^;]*)'); // 쿠키들을 세미콘론으로 구분하는 정규표현식 정의
+				return key.test(document.cookie) ? unescape(RegExp.$1) : ''; // 인자로 받은 키에 해당하는 키가 있으면 값을 반환
+			}
+
+			let token = getCookie('mytoken')
+			if (token != "") {
+				console.log("123")
+
+				$("#login").hide();
+				$("#join").hide();
+                console.log("44")
+
+
+			}
+			else {
+				$("#logout").hide();
+				// location.href = "/login";
+			}
+		});
+
         $(document).ready(function () {
             show_makgeolli();
 
@@ -103,6 +127,22 @@
         function join_button() {
             location.href = "/join";
         }
+
+        function logout () {
+		location.href = "/login";
+		}
+
+        function camera(){
+			let user_id = "${user_id}";
+			if (user_id == ""){
+				alert("로그인 후 사용하실 수 있습니다.")
+				location.href = "/login";
+				console.log("ddd")
+			}else {
+				location.href = "/camera";
+			}
+		}
+
 
 
 
@@ -184,12 +224,15 @@
             </div>
         </div>
         <div id="login_info" class="login-box">
-            <button type="button" class="btn btn-light" onclick="login_button()"><h2>로그인</h2></button>
-            <button type="button" class="btn btn-light" onclick="join_button()"><h2>회원가입</h2></button>
+            <button type="button" class="btn btn-light" id="login" onclick="login_button()"><h2>로그인</h2></button>
+            <button type="button" class="btn btn-light" id="join" onclick="join_button()"><h2>회원가입</h2></button>
+            <button type="button" class="btn btn-light" id="logout" onclick="logout()" href="/login"><h2 >로그아웃</h2></button>
         </div>
         <div>
-            <div id="camera-icon"><a href="https://www.naver.com/" target="_blank">
-                <img src="../static/img/camera2.png" width="80" height="80" alt="">
+            <div>
+            <div id="camera-icon">
+				<a class="camera_page" onclick="camera()"><img src="../static/img/camera2.png" width="80" height="80" alt="">
+				</a>
             </a>
             </div>
         </div>
@@ -289,7 +332,7 @@
 
 </div>
 
-<div class="left-box">
+<div class="left-box" id="boxl">
     <h1 id="left_box_text">안주추천</h1>
     <img id="food1" >
 </div>
@@ -301,5 +344,3 @@
 </div>
 
 </body>
-
-</html>

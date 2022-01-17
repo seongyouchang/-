@@ -132,7 +132,8 @@
     background-color: blanchedalmond;
     border: 5px solid black;
     position: relative;
-    top: 370px;
+    top: -800px;
+    left: -275px;
     margin-left: 340px;
     text-align: center;
     font-family: 'Dongle', Serif;
@@ -161,8 +162,9 @@
     background-color:blanchedalmond ;
     border: 5px solid black;
     position: relative;
-    top: 120px;
-    float: right;
+    top: -1050px;
+    right: -550px;
+
     margin-right: 340px;
     text-align: center;
     font-family: 'Dongle', Serif;
