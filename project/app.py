@@ -11,7 +11,12 @@ import base64
 import numpy as np
 import io
 import tensorflow as tf
+# 사용하지 않는다고 써있지만 지우면 작동이 안되는 패키지 ;;;
 from tensorflow.keras.models import Model
+
+import requests
+from bs4 import BeautifulSoup
+
 
 # from keras.models import load_model
 
@@ -22,7 +27,7 @@ from tensorflow.keras.models import Model
 
 SECRET_KEY = '333'
 app = Flask(__name__)
-# model = tf.keras.models.load_model('keras_model.h5')
+model = tf.keras.models.load_model('keras_model.h5')
 # MongoDB 연결
 from pymongo import MongoClient
 
@@ -209,7 +214,6 @@ def comment_del():
 def requst():
     return render_template('request.html')
 
-
 @app.route("/request", methods=["POST"])
 def request_post():
     userid = request.form['userid_give']
@@ -243,7 +247,7 @@ def camera():
     return render_template('camera.html')
 
 
-# 지울것
+
 @app.route("/camera_test", methods=['GET'])
 def test_camera():
     print("테스트다 에헷")
@@ -252,18 +256,10 @@ def test_camera():
 
 @app.route("/camera_test", methods=['POST'])
 def test_camera_test():
-    # import keras
-
-    # print("Keras Version", keras.__version__)
-
-    # print("TF Version", tf.__version__)
-
-    # model.summary()
     data = request.form.get('data')
     # print("이얍 받아라 나의 데이터를")
     data = data.split(',')[1]
     imgdata = base64.b64decode(data)
-    # print("디코더")
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
     image = Image.open(io.BytesIO(imgdata))
     size = (224, 224)
@@ -276,17 +272,14 @@ def test_camera_test():
     prediction = model.predict(data)
     print(np.around(prediction, 8))
     label = np.array([['톡쏘는 알밤 동동 막걸리', '경주법주 쌀 막걸리', '인천 소성주 생 막걸리', '장수 생 막걸리', '지평 막걸리', '인식 중입니다. 가까이오세요']])
+    # ['톡쏘는 알밤 동동 막걸리', '경주법주 쌀 막걸리', '인천 소성주 생 막걸리', '장수 생 막걸리', '지평 막걸리', '인식 중입니다. 가까이오세요']
+    # ['albam', 'gyeongju', 'jangsu', 'jipyeong', 'sosungju' , '인식중입니다.']
     print(label[prediction[:] > 0.5])
     mak_id = np.array([['30', '50', '40', '20', '10', '0']])
     print(mak_id[prediction[:] > 0.5])
-    # img = cv2.imread('static/mak_img/10.jpg', cv2.IMREAD_COLOR)
-    # cv2.imshow('image', img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows
     return jsonify({'msg': label[prediction[:] > 0.5][0], 'mak_id': mak_id[prediction[:] > 0.5][0]})
 
 
-# 여기까지 지울것
 
 if __name__ == '__main__':
     # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
