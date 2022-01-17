@@ -36,19 +36,21 @@
                 $.ajax({
                     type: "POST",
                     url: "/request",
-                    data: {userid_give: user_id, makname_give: mak_name, makfile_give: mak_file, request_give: request},
+                    data: {'userid_give': user_id, 'makname_give': mak_name, 'makfile_give': mak_file, 'request_give': request},
                     success: function (response) {
+
                         if(response['result']=='success') {  //본인의 id일경우 요청완료
+                            console.log("들어왔니???")
                             alert(response["msg"])
-                            location.href = "/"
+                            // location.href = "/"
                         }
                         else if (response['result']=='check') { //본인의 id가 아닐경우
                             alert(response["msg"])
-                            window.location.reload()
+                            // window.location.reload()
                         }
                         else {
                             alert(response["msg"])  //로그인시간이 만료되었을경우
-                            location.href = "/login"
+                            // location.href = "/login"
                         }
                     }
                 });
