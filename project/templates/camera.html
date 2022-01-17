@@ -9,6 +9,9 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        let mak_id =0;
+    </script>
 </head>
 <style>
     body {
@@ -75,7 +78,6 @@
             <div class="header">
                 <img onclick="window.history.back()" id='back' src="/static/back_icon.png">
                 <img id='logo' src='/static/logo-removebg-preview.png'>
-                <!--<button type="button" class="btn btn-warning">추가요청</button>-->
             </div>
             <div class='webcam'>
                 <video id="video" width="100%" autoplay></video>
@@ -85,13 +87,13 @@
             <div class='predict'>
                 <p id="object">확인중...</p>
             </div>
-            <div class='bt'>
-                <button type="button" class="btn btn-warning">알아보기</button>
-                <button type="button" onclick="location.href='request.html'" class="btn btn-warning">요청하기</button>
-                <button type="button" class="btn btn-warning">다시하기</button>
+            <div class='bt' id = 'bt'>
+                <button type="button" onclick="location.href = '/comment?mak_id=' + mak_id" class="btn btn-warning">
+                    알아보기</button>
+                <button type="button" onClick="window.location.reload()" class="btn btn-warning">다시하기</button>
             </div>
             <div class='request'>
-                <p>확인이 안되시나요? 막걸리를 추가 요청해주세요!</p>
+               <p>확인이 안되시나요? 막걸리를 <a href="/request">추가 요청</a>해주세요!</p>
             </div>
 
         </div>
@@ -122,7 +124,7 @@
         document.getElementById("canvas").style = "display:none;" //캔버스 안보이게
 
         data = canvas.toDataURL("image/JPEG"); //캔버스 이미지를 base64로 변환
-        console.log(data)
+        // console.log(data)
         $.ajax({
             type: "POST",
             url: "/camera_test",
@@ -130,8 +132,22 @@
             // contentType: false,
             // processData: false,
             success: function (data) {
+                var a = document.getElementById("bt");
                 $('#object').empty();
                 $('#object').append(`${data['msg']}`);
+                mak_id = data['mak_id']
+                console.log(mak_id)
+                if(parseInt(mak_id) == 0){
+
+                    a.innerHTML = " <button type='button' onClick='window.location.reload()' class='btn btn-warning'>알아보기</button>\n" +
+                        "                    <button type='button' onClick='window.location.reload()' class='btn btn-warning'>다시하기</button>"
+
+                }else {
+                    a.innerHTML = " <button type='button' onclick=\"location.href = '/comment?mak_id=' + mak_id\" class='btn btn-warning'>알아보기</button>\n" +
+                        "                    <button type='button' onClick='window.location.reload()' class='btn btn-warning'>다시하기</button>"
+
+                }
+
                 // if (data.success) {
                 //
                 // } else {
@@ -142,10 +158,9 @@
                 console.log('There was an error uploading your file!');
             }
         }).done(function () {
-            console.log("Sent");
+            // console.log("Sent");
         });
     }
 </script>
-
 
 </html>
