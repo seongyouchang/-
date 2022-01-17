@@ -10,6 +10,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <!--    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet">
@@ -42,44 +43,43 @@
         //막거리 정보 아이디 전역변수 초기값 설정
         let number_id = 0
 
-        	$(document).ready(function () {
-			show_makgeolli()
+        $(document).ready(function () {
+            show_makgeolli()
 
-			function getCookie(key) {
-				key = new RegExp(key + '=([^;]*)'); // 쿠키들을 세미콘론으로 구분하는 정규표현식 정의
-				return key.test(document.cookie) ? unescape(RegExp.$1) : ''; // 인자로 받은 키에 해당하는 키가 있으면 값을 반환
-			}
+            function getCookie(key) {
+                key = new RegExp(key + '=([^;]*)'); // 쿠키들을 세미콘론으로 구분하는 정규표현식 정의
+                return key.test(document.cookie) ? unescape(RegExp.$1) : ''; // 인자로 받은 키에 해당하는 키가 있으면 값을 반환
+            }
 
-			let token = getCookie('mytoken')
-			if (token != "") {
-				console.log("123")
+            let token = getCookie('mytoken')
+            if (token != "") {
+                console.log("123")
 
-				$("#login").hide();
-				$("#join").hide();
+                $("#login").hide();
+                $("#join").hide();
                 console.log("44")
 
 
-			}
-			else {
-				$("#logout").hide();
-				// location.href = "/login";
-			}
-		});
+            } else {
+                $("#logout").hide();
+                // location.href = "/login";
+            }
+        });
 
         $(document).ready(function () {
             show_makgeolli();
 
 
             //막걸리 정보를 부르는 함수수
-           document.getElementById('food1').src = "../static/img/num" + random_food(1, 5) + ".jpeg"
+            document.getElementById('food1').src = "../static/img/num" + random_food(1, 5) + ".jpeg"
             info_right();
-             console.log(document.querySelectorAll('.right').length);
-             for (var i = 0 ; i < document.querySelectorAll('.right').length; i++ ){
-                 document.querySelectorAll('.right')[i].addEventListener('click',info_right)
-             }
-             for (var i = 0 ; i < document.querySelectorAll('.left').length; i++ ){
-                 document.querySelectorAll('.left')[i].addEventListener('click',info_left)
-             }
+            console.log(document.querySelectorAll('.right').length);
+            for (var i = 0; i < document.querySelectorAll('.right').length; i++) {
+                document.querySelectorAll('.right')[i].addEventListener('click', info_right)
+            }
+            for (var i = 0; i < document.querySelectorAll('.left').length; i++) {
+                document.querySelectorAll('.left')[i].addEventListener('click', info_left)
+            }
         });
 
 
@@ -128,22 +128,22 @@
             location.href = "/join";
         }
 
-        function logout () {
-		location.href = "/login";
-		}
+        function logout() {
 
-        function camera(){
-			let user_id = "${user_id}";
-			if (user_id == ""){
-				alert("로그인 후 사용하실 수 있습니다.")
-				location.href = "/login";
-				console.log("ddd")
-			}else {
-				location.href = "/camera";
-			}
-		}
+             $.removeCookie('mytoken');
+            location.href = "/";
+        }
 
-
+        function camera() {
+            let user_id = "${user_id}";
+            if (user_id == "") {
+                alert("로그인 후 사용하실 수 있습니다.")
+                location.href = "/login";
+                console.log("ddd")
+            } else {
+                location.href = "/camera";
+            }
+        }
 
 
         //해당 막걸리 페이지로 이동
@@ -160,11 +160,11 @@
 
 
         //막걸리 페이지 오른쪽 버튼 누를때
-        function info_right(){
+        function info_right() {
             number_id = number_id + 10;
-                        if (number_id > 50) {
-                            number_id = 10;
-                        }
+            if (number_id > 50) {
+                number_id = 10;
+            }
             $.ajax({
                 url: '/main',
                 type: 'post',
@@ -181,17 +181,18 @@
                     $('#mak_info_li').append(temp_html);
                     document.getElementById('food1').src = "../static/img/num" + random_food(1, 5) + ".jpeg";
                 },
-                error: function() {
+                error: function () {
                     console.log('실패')
                 }
             });
         }
+
         //막걸리 페이지 왼쪽 버튼 누를때
-        function info_left(){
-             number_id = number_id - 10;
-                        if (number_id < 10) {
-                            number_id = 50;
-                        }
+        function info_left() {
+            number_id = number_id - 10;
+            if (number_id < 10) {
+                number_id = 50;
+            }
             $.ajax({
                 url: '/main',
                 type: 'post',
@@ -208,7 +209,7 @@
                     $('#mak_info_li').append(temp_html);
                     document.getElementById('food1').src = "../static/img/num" + random_food(1, 5) + ".jpeg";
                 },
-                error: function() {
+                error: function () {
                     console.log('실패')
                 }
             });
@@ -218,7 +219,7 @@
 <body>
 <div class="container contact">
     <div class="row">
-        <div class="col-md-12" >
+        <div class="col-md-12">
             <div style="text-align: center;"/>
             <div id="header_box"><img src="../static/img/logo-removebg-preview.png" alt="">
             </div>
@@ -226,115 +227,117 @@
         <div id="login_info" class="login-box">
             <button type="button" class="btn btn-light" id="login" onclick="login_button()"><h2>로그인</h2></button>
             <button type="button" class="btn btn-light" id="join" onclick="join_button()"><h2>회원가입</h2></button>
-            <button type="button" class="btn btn-light" id="logout" onclick="logout()" href="/login"><h2 >로그아웃</h2></button>
+            <button type="button" class="btn btn-light" id="logout" onclick="logout()"><h2>로그아웃</h2>
+            </button>
         </div>
         <div>
             <div>
-            <div id="camera-icon">
-				<a class="camera_page" onclick="camera()"><img src="../static/img/camera2.png" width="80" height="80" alt="">
-				</a>
-            </a>
+                <div id="camera-icon">
+                    <a class="camera_page" onclick="camera()"><img src="../static/img/camera2.png" width="80"
+                                                                   height="80" alt="">
+                    </a>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="section">
-    <input type="radio" name="slide" id="slide01" checked>
-    <input type="radio" name="slide" id="slide02">
-    <input type="radio" name="slide" id="slide03">
-    <input type="radio" name="slide" id="slide04">
-    <input type="radio" name="slide" id="slide05">
-    <div class="slidewrap">
-        <ul class="slidelist" id="detail-1">
-            <!-- 슬라이드 영역 -->
-            <li class="slideitem">
-                <a>
-                    <div class="textbox">
-                        <h1 id="text_1"></h1>
-                    </div>
-                </a>
-            </li>
-            <li class="slideitem">
-                <a>
-                    <div class="textbox">
-                        <h1 id="text_2"></h1>
-                    </div>
-                </a>
-            </li>
-            <li class="slideitem">
-                <a>
-                    <div class="textbox">
-                        <h1 id="text_3">막걸리 추천</h1>
-                    </div>
-                </a>
-            </li>
-            <li class="slideitem">
-                <a>
-                    <div class="textbox">
-                        <h1 id="text_4">막걸리 추천</h1>
-                    </div>
-                </a>
-            </li>
-            <li class="slideitem">
-                <a>
-                    <div class="textbox">
-                        <h1 id="text_5">막걸리 추천</h1>
-                    </div>
-                </a>
-            </li>
-            <li class="slideitem">
-                <a>
-                    <div class="textbox">
-                        <h3>두번째 슬라이드</h3>
-                        <p>두번째 슬라이드 입니다.</p>
-                    </div>
-                    <img src="../static/img/slide.jpg">
-                </a>
-            </li>
+    <div class="section">
+        <input type="radio" name="slide" id="slide01" checked>
+        <input type="radio" name="slide" id="slide02">
+        <input type="radio" name="slide" id="slide03">
+        <input type="radio" name="slide" id="slide04">
+        <input type="radio" name="slide" id="slide05">
+        <div class="slidewrap">
+            <ul class="slidelist" id="detail-1">
+                <!-- 슬라이드 영역 -->
+                <li class="slideitem">
+                    <a>
+                        <div class="textbox">
+                            <h1 id="text_1"></h1>
+                        </div>
+                    </a>
+                </li>
+                <li class="slideitem">
+                    <a>
+                        <div class="textbox">
+                            <h1 id="text_2"></h1>
+                        </div>
+                    </a>
+                </li>
+                <li class="slideitem">
+                    <a>
+                        <div class="textbox">
+                            <h1 id="text_3">막걸리 추천</h1>
+                        </div>
+                    </a>
+                </li>
+                <li class="slideitem">
+                    <a>
+                        <div class="textbox">
+                            <h1 id="text_4">막걸리 추천</h1>
+                        </div>
+                    </a>
+                </li>
+                <li class="slideitem">
+                    <a>
+                        <div class="textbox">
+                            <h1 id="text_5">막걸리 추천</h1>
+                        </div>
+                    </a>
+                </li>
+                <li class="slideitem">
+                    <a>
+                        <div class="textbox">
+                            <h3>두번째 슬라이드</h3>
+                            <p>두번째 슬라이드 입니다.</p>
+                        </div>
+                        <img src="../static/img/slide.jpg">
+                    </a>
+                </li>
 
-            <!-- 좌,우 슬라이드 버튼 -->
-            <div class="slide-control">
-                <div>
-                    <label for="slide05" class="left"></label>
-                    <label for="slide02" class="right"></label>
+                <!-- 좌,우 슬라이드 버튼 -->
+                <div class="slide-control">
+                    <div>
+                        <label for="slide05" class="left"></label>
+                        <label for="slide02" class="right"></label>
+                    </div>
+                    <div>
+                        <label for="slide01" class="left"></label>
+                        <label for="slide03" class="right"></label>
+                    </div>
+                    <div>
+                        <label for="slide02" class="left"></label>
+                        <label for="slide04" class="right"></label>
+                    </div>
+                    <div>
+                        <label for="slide03" class="left"></label>
+                        <label for="slide05" class="right"></label>
+                    </div>
+                    <div>
+                        <label for="slide04" class="left"></label>
+                        <label for="slide01" class="right"></label>
+                    </div>
                 </div>
-                <div>
-                    <label for="slide01" class="left"></label>
-                    <label for="slide03" class="right"></label>
-                </div>
-                <div>
-                    <label for="slide02" class="left"></label>
-                    <label for="slide04" class="right"></label>
-                </div>
-                <div>
-                    <label for="slide03" class="left"></label>
-                    <label for="slide05" class="right"></label>
-                </div>
-                <div>
-                    <label for="slide04" class="left"></label>
-                    <label for="slide01" class="right"></label>
-                </div>
-            </div>
-        </ul>
-        <!-- 페이징 -->
-        <ul class="slide-pagelist">
-            <li><label for="slide01"></label></li>
-            <li><label for="slide02"></label></li>
-            <li><label for="slide03"></label></li>
-            <li><label for="slide04"></label></li>
-            <li><label for="slide05"></label></li>
-        </ul>
+            </ul>
+            <!-- 페이징 -->
+            <ul class="slide-pagelist">
+                <li><label for="slide01"></label></li>
+                <li><label for="slide02"></label></li>
+                <li><label for="slide03"></label></li>
+                <li><label for="slide04"></label></li>
+                <li><label for="slide05"></label></li>
+            </ul>
+        </div>
+
+
     </div>
-
-
-</div>
 
 </div>
 
 <div class="left-box" id="boxl">
     <h1 id="left_box_text">안주추천</h1>
-    <img id="food1" >
+    <img id="food1">
 </div>
 <div class="light-box">
     막걸리 정보
@@ -344,3 +347,4 @@
 </div>
 
 </body>
+</html>

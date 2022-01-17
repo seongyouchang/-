@@ -11,6 +11,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         let mak_id =0;
+
     </script>
 </head>
 <style>
@@ -113,7 +114,7 @@
             video.play();
         });
     }
-    setInterval(myTimer, 500);
+    setInterval(myTimer, 700);
 
     function myTimer() {
         var canvas = document.getElementById('canvas');
@@ -133,8 +134,9 @@
             // processData: false,
             success: function (data) {
                 var a = document.getElementById("bt");
+                // 사물 판별 메시지
                 $('#object').empty();
-                $('#object').append(`${data['msg']}`);
+                $('#object').append(`<h1>${data['msg']}</h1>`);
                 mak_id = data['mak_id']
                 console.log(mak_id)
                 if(parseInt(mak_id) == 0){
@@ -147,18 +149,12 @@
                         "                    <button type='button' onClick='window.location.reload()' class='btn btn-warning'>다시하기</button>"
 
                 }
-
-                // if (data.success) {
-                //
-                // } else {
-                //     // alert('There was an error uploading your file!');
-                // }
             },
             error: function (data) {
                 console.log('There was an error uploading your file!');
             }
         }).done(function () {
-            // console.log("Sent");
+
         });
     }
 </script>

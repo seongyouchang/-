@@ -17,7 +17,6 @@ from tensorflow.keras.models import Model
 import requests
 from bs4 import BeautifulSoup
 
-
 SECRET_KEY = '333'
 app = Flask(__name__)
 model = tf.keras.models.load_model('keras_model.h5')
@@ -227,6 +226,14 @@ def request_post():
 
 @app.route("/camera", methods=['GET'])
 def camera():
+    my_user_id = request.cookies.get('mytoken')
+
+    try:
+        payload = jwt.decode(my_user_id, SECRET_KEY, algorithms=['HS256'])
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그아웃 되었습니다. 다시 로그인 해주세요."))
     return render_template('camera.html')
 
 
