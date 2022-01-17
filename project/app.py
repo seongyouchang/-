@@ -22,7 +22,7 @@ from tensorflow.keras.models import Model
 
 SECRET_KEY = '333'
 app = Flask(__name__)
-model = tf.keras.models.load_model('keras_model.h5')
+model = tf.keras.models.load_model('static/model/keras_model.h5')
 # MongoDB 연결
 from pymongo import MongoClient
 
@@ -279,6 +279,6 @@ def test_camera_test():
 if __name__ == '__main__':
     # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     # ssl_context.load_cert_chain(certfile='private.pem', keyfile='private.pem', password='java1234c')
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5002, debug=True)
 
 # '0.0.0.0', port=5000, debug=True ,
