@@ -36,7 +36,7 @@
                 $.ajax({
                     type: "POST",
                     url: "/request",
-                    data: {userid_give: user_id, makname_give: mak_name, makfile_give: mak_file, request_give: request},
+                    data: {'userid_give': user_id, 'makname_give': mak_name, 'makfile_give': mak_file, 'request_give': request},
                     success: function (response) {
                         if(response['result']=='success') {  //본인의 id일경우 요청완료
                             alert(response["msg"])
