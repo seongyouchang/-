@@ -136,9 +136,10 @@ def comments():
 
     if mak_id is None:
         return render_template('main.html')
+
     com = list(db.Comment.find({'mak_ref_id': int(mak_id)}, {'_id': 0}).sort('comment_id', -1))
     mak1 = db.Makgeolli.find_one({'mak_id': int(mak_id)}, {'_id': 0})
-
+    db.Makgeolli.update_one({'mak_id': int(mak_id)}, {'$set': {'mak_star_avg': int(star_avg(com))}})
     return render_template('comment.html', comments=com, mak=mak1, user_id=payload['user_id'], mak_id=mak_id,
                            avg=int(star_avg(com)))
 
@@ -225,9 +226,9 @@ def request_post():
     db.Recommend.insert_one(doc)
     return jsonify({'msg': userid + "님의 추천막걸리가 요청되었습니다"})
 
+
 @app.route("/camera", methods=['GET'])
 def camera():
-
     return render_template('camera.html')
 
 
@@ -261,18 +262,18 @@ def test_camera_test():
     normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
     # Load the image into the array
     data[0] = normalized_image_array
-    # print(vidi.shape)
     prediction = model.predict(data)
-    print(np.around(prediction,8))
+    print(np.around(prediction, 8))
     label = np.array([['톡쏘는 알밤 동동 막걸리', '경주법주 쌀 막걸리', '인천 소성주 생 막걸리', '장수 생 막걸리', '지평 막걸리', '인식 중입니다. 가까이오세요']])
     print(label[prediction[:] > 0.5])
-    mak_id = np.array([[ '30', '50', '40', '20', '10', '0']])
+    mak_id = np.array([['30', '50', '40', '20', '10', '0']])
     print(mak_id[prediction[:] > 0.5])
     # img = cv2.imread('static/mak_img/10.jpg', cv2.IMREAD_COLOR)
     # cv2.imshow('image', img)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows
-    return jsonify({'msg': label[prediction[:] > 0.5][0],'mak_id': mak_id[prediction[:] > 0.5][0]})
+    return jsonify({'msg': label[prediction[:] > 0.5][0], 'mak_id': mak_id[prediction[:] > 0.5][0]})
+
 
 # 여기까지 지울것
 
