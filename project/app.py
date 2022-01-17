@@ -266,12 +266,13 @@ def test_camera_test():
     print(np.around(prediction,8))
     label = np.array([['톡쏘는 알밤 동동 막걸리', '경주법주 쌀 막걸리', '인천 소성주 생 막걸리', '장수 생 막걸리', '지평 막걸리', '인식 중입니다. 가까이오세요']])
     print(label[prediction[:] > 0.5])
-
+    mak_id = np.array([[ '30', '50', '40', '20', '10', '0']])
+    print(mak_id[prediction[:] > 0.5])
     # img = cv2.imread('static/mak_img/10.jpg', cv2.IMREAD_COLOR)
     # cv2.imshow('image', img)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows
-    return jsonify({'msg': label[prediction[:] > 0.5][0]})
+    return jsonify({'msg': label[prediction[:] > 0.5][0],'mak_id': mak_id[prediction[:] > 0.5][0]})
 
 # 여기까지 지울것
 
