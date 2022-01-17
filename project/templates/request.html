@@ -10,42 +10,53 @@
     <link rel="stylesheet" href="/static/css/request.css">
 
 
-    <script>
-        $(document).ready(function(){
-            $("#submit").click(function(){
-                if($("#user_id").val().length==0) {
-                    alert("id를 입력하세요");
-                    $("#user_id").focus();
-                    return false;
-                }
-                if($("#mak_name").val().length==0) {
-                    alert("막걸리명을 입력하세요");
-                    $("#mak_name").focus();
-                    return false;
-                }
-                if($("#request").val().length==0) {
-                    alert("요청사항을 입력하세요");
-                    $("#request").focus();
-                    return false;
-                }
-            });
-        });
+      <script>
 
         function request_button() {
-            let user_id = $('#user_id').val()
-            let mak_name = $('#mak_name').val()
-            let mak_file = $('#mak_file').val()
-            let request = $('#request').val()
-            $.ajax({
-                type: "POST",
-                url: "/request",
-                data: {userid_give:user_id,makname_give:mak_name,makfile_give:mak_file,request_give:request},
-                success: function (response) {
-                    alert(response["msg"])
-                    location.href = "/";
-                }
-            });
+            //userid, 막걸리명, 요청사항 필수입력
+            if ($("#user_id").val().length == 0) {
+                alert("id를 입력하세요");
+                $("#user_id").focus();
+                return false;
+            }
+            if ($("#mak_name").val().length == 0) {
+                alert("막걸리명을 입력하세요");
+                $("#mak_name").focus();
+                return false;
+            }
+            if ($("#request").val().length == 0) {
+                alert("요청사항을 입력하세요");
+                $("#request").focus();
+                return false;
+            } else {
+                let user_id = $('#user_id').val()
+                let mak_name = $('#mak_name').val()
+                let mak_file = $('#mak_file').val()
+                let request = $('#request').val()
+                $.ajax({
+                    type: "POST",
+                    url: "/request",
+                    data: {userid_give: user_id, makname_give: mak_name, makfile_give: mak_file, request_give: request},
+                    success: function (response) {
+                        if(response['result']=='success') {  //본인의 id일경우 요청완료
+                            alert(response["msg"])
+                            location.href = "/"
+                        }
+                        else if (response['result']=='check') { //본인의 id가 아닐경우
+                            alert(response["msg"])
+                            window.location.reload()
+                        }
+                        else {
+                            alert(response["msg"])  //로그인시간이 만료되었을경우
+                            location.href = "/login"
+                        }
+                    }
+                });
+            }
         }
+
+
+
 
     </script>
 </head>
