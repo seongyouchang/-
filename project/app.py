@@ -3,10 +3,10 @@ from PIL import Image, ImageOps
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 import hashlib
-import json
+
 import jwt
 import datetime
-import cv2
+
 import base64
 import numpy as np
 import io
@@ -17,13 +17,6 @@ from tensorflow.keras.models import Model
 import requests
 from bs4 import BeautifulSoup
 
-
-# from keras.models import load_model
-
-# import certifi
-# import ssl
-
-# ca = certifi.where()
 
 SECRET_KEY = '333'
 app = Flask(__name__)
@@ -176,7 +169,7 @@ def comment_insert():
 
 # 코멘트 숫자를 관리하기 위한 시퀀스 테이블
 def seq_comment_id():
-    # comment_id의 숫자를 1씩 더해주는 시퀀스
+    #     # comment_id의 숫자를 1씩 더해주는 시퀀스
     db.Seq.update_one({'name': 'comment_id'}, {'$inc': {'val': 1}})
     # 그 시퀀스로 더해서 변경된 comment_id를 가져오는 부분
     return db.Seq.find_one({'name': 'comment_id'}, {'_id': 0, 'name': 0})
@@ -214,6 +207,7 @@ def comment_del():
 def requst():
     return render_template('request.html')
 
+
 @app.route("/request", methods=["POST"])
 def request_post():
     userid = request.form['userid_give']
@@ -234,7 +228,6 @@ def request_post():
 @app.route("/camera", methods=['GET'])
 def camera():
     return render_template('camera.html')
-
 
 
 @app.route("/camera_test", methods=['GET'])
@@ -269,10 +262,5 @@ def test_camera_test():
     return jsonify({'msg': label[prediction[:] > 0.5][0], 'mak_id': mak_id[prediction[:] > 0.5][0]})
 
 
-
 if __name__ == '__main__':
-    # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    # ssl_context.load_cert_chain(certfile='private.pem', keyfile='private.pem', password='java1234c')
     app.run('0.0.0.0', port=5000, debug=True)
-
-# '0.0.0.0', port=5000, debug=True ,
