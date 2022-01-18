@@ -19,7 +19,7 @@ import requests
 
 SECRET_KEY = '333'
 app = Flask(__name__)
-model = tf.keras.models.load_model('keras_model.h5')
+model = tf.keras.models.load_model('./model/keras_model.h5')
 # MongoDB 연결
 from pymongo import MongoClient
 
@@ -55,7 +55,6 @@ def mak_info_ajax():
 @app.route("/join", methods=['GET', 'POST'])
 def join():
     if request.method == 'POST':
-
         name_receive = request.form['name_give']
         birth_receive = request.form['birth_give']
         id_receive = request.form['id_give']
@@ -216,11 +215,11 @@ def request_post():
     # print(request_receive)
     #쿠키가져와 로그인한 id와 id입력란에 적은 id가 일치한지 확인
     token_receive = request.cookies.get('mytoken')
-    print(token_receive)
+    # print(token_receive)
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.User.find_one({"user_name": payload['user_id']},{'_id': 0})
-        print(user_info['user_name'])
+        # print(user_info['user_name'])
         # 같을경우 db에 저장후 완료처리
         if user_info['user_name']==userid:
             doc = {
@@ -252,10 +251,13 @@ def camera():
     return render_template('camera.html')
 
 
+
+
 @app.route("/camera_test", methods=['GET'])
 def test_camera():
     print("테스트다 에헷")
     return render_template('camera_test.html')
+
 
 
 @app.route("/camera_test", methods=['POST'])
@@ -274,7 +276,7 @@ def test_camera_test():
     # Load the image into the array
     data[0] = normalized_image_array
     prediction = model.predict(data)
-    print(np.around(prediction, 8))
+    # print(np.around(prediction, 8))
     label = np.array([['톡쏘는 알밤 동동 막걸리', '경주법주 쌀 막걸리', '인천 소성주 생 막걸리', '장수 생 막걸리', '지평 막걸리', '인식 중입니다. 가까이오세요']])
     # ['톡쏘는 알밤 동동 막걸리', '경주법주 쌀 막걸리', '인천 소성주 생 막걸리', '장수 생 막걸리', '지평 막걸리', '인식 중입니다. 가까이오세요']
     # ['albam', 'gyeongju', 'jangsu', 'jipyeong', 'sosungju' , '인식중입니다.']

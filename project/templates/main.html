@@ -10,7 +10,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <!--    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet">
@@ -21,15 +21,16 @@
         }
 
         .contact {
-            padding: 4%;
-            height: 400px;
+            padding: 1%;
         }
 
-        .col-md-12 {
+        .row {
             /*height 주석 처리 하세요*/
-            height: 1000px;
+
+            margin: 0;
+            height: 900px;
             background: #fff;
-            padding: 3%;
+            padding: 0 10px;
             border-radius: 0.5rem;
             box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.1);
             width: 1200px;
@@ -105,11 +106,9 @@
 
                         let temp_html = `<li className="slideitem">
 								\t\t\t\t\t\t\t<a>
-
 								\t\t\t\t\t\t\t\t<div className="textbox">
-								\t\t\t\t\t\t\t\t\t<h1 id="text_2" >막걸리 추천</h1>
+								\t\t\t\t\t\t\t\t\t<h1 id="text_"+(i+1) >막걸리 추천</h1>
 													<img id="${rows[i]['mak_id']}" class ="mak_img" src="../static/mak_img/${mak_img_url}" onclick="mak_page(${rows[i]['mak_id']})">
-
 								\t\t\t\t\t\t\t\t</div>
 								\t\t\t\t\t\t\t</a>
 								\t\t\t\t\t\t</li>`
@@ -130,7 +129,7 @@
 
         function logout() {
 
-             $.removeCookie('mytoken');
+            $.removeCookie('mytoken');
             location.href = "/";
         }
 
@@ -218,133 +217,131 @@
 </head>
 <body>
 <div class="container contact">
-    <div class="row">
-        <div class="col-md-12">
-            <div style="text-align: center;"/>
-            <div id="header_box"><img src="../static/img/logo-removebg-preview.png" alt="">
+    <div class="row col-md-12">
+        <div id="header_box" class="col-md-12">
+            <div id="login-box" class="col-md-2">
+                <button type="button" class="btn btn-light" id="login" onclick="login_button()"><h2>로그인</h2></button>
+                <button type="button" class="btn btn-light" id="join" onclick="join_button()"><h2>회원가입</h2></button>
+                <button type="button" class="btn btn-light" id="logout" onclick="logout()"><h2>로그아웃</h2></button>
+            </div>
+            <div id="logo_title" class="col-md-8">
+                <img src="../static/img/logo-removebg-preview.png" alt="따봉이쥬 막걸리">
+            </div>
+            <div class="col-md-2" id="camera-icon">
+                <a class="camera_page" onclick="camera()">
+                    <img src="../static/img/camera2.png" width="80" height="80" alt="">
+                </a>
             </div>
         </div>
-        <div id="login_info" class="login-box">
-            <button type="button" class="btn btn-light" id="login" onclick="login_button()"><h2>로그인</h2></button>
-            <button type="button" class="btn btn-light" id="join" onclick="join_button()"><h2>회원가입</h2></button>
-            <button type="button" class="btn btn-light" id="logout" onclick="logout()"><h2>로그아웃</h2>
-            </button>
+
+        <div class="section">
+            <input type="radio" name="slide" id="slide01" checked>
+            <input type="radio" name="slide" id="slide02">
+            <input type="radio" name="slide" id="slide03">
+            <input type="radio" name="slide" id="slide04">
+            <input type="radio" name="slide" id="slide05">
+            <div class="slidewrap">
+                <ul class="slidelist" id="detail-1">
+                    <!-- 슬라이드 영역 -->
+                    <!--                    <li class="slideitem" >-->
+                    <!--                        <a>-->
+                    <!--                            <div class="textbox">-->
+                    <!--                                <h1 id="text_1"></h1>-->
+                    <!--                            </div>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="slideitem">-->
+                    <!--                        <a>-->
+                    <!--                            <div class="textbox">-->
+                    <!--                                <h1 id="text_2"></h1>-->
+                    <!--                            </div>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="slideitem">-->
+                    <!--                        <a>-->
+                    <!--                            <div class="textbox">-->
+                    <!--                                <h1 id="text_3">막걸리 추천</h1>-->
+                    <!--                            </div>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="slideitem">-->
+                    <!--                        <a>-->
+                    <!--                            <div class="textbox">-->
+                    <!--                                <h1 id="text_4">막걸리 추천</h1>-->
+                    <!--                            </div>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="slideitem">-->
+                    <!--                        <a>-->
+                    <!--                            <div class="textbox">-->
+                    <!--                                <h1 id="text_5">막걸리 추천</h1>-->
+                    <!--                            </div>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+                    <!--                    <li class="slideitem">-->
+                    <!--                        <a>-->
+                    <!--                            <div class="textbox">-->
+                    <!--                                <h3>두번째 슬라이드</h3>-->
+                    <!--                                <p>두번째 슬라이드 입니다.</p>-->
+                    <!--                            </div>-->
+                    <!--                            &lt;!&ndash;                            <img src="../static/img/slide.jpg">&ndash;&gt;-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+
+                    <!-- 좌,우 슬라이드 버튼 -->
+                    <div class="slide-control" >
+                        <div>
+                            <label for="slide05" class="left"></label>
+                            <label for="slide02" class="right"></label>
+                        </div>
+                        <div>
+                            <label for="slide01" class="left"></label>
+                            <label for="slide03" class="right"></label>
+                        </div>
+                        <div>
+                            <label for="slide02" class="left"></label>
+                            <label for="slide04" class="right"></label>
+                        </div>
+                        <div>
+                            <label for="slide03" class="left"></label>
+                            <label for="slide05" class="right"></label>
+                        </div>
+                        <div>
+                            <label for="slide04" class="left"></label>
+                            <label for="slide01" class="right"></label>
+                        </div>
+                    </div>
+                </ul>
+                <!-- 페이징 -->
+                <div>
+                    <ul class="slide-pagelist">
+                        <li><label for="slide01"></label></li>
+                        <li><label for="slide02"></label></li>
+                        <li><label for="slide03"></label></li>
+                        <li><label for="slide04"></label></li>
+                        <li><label for="slide05"></label></li>
+                    </ul>
+                </div>
+
+            </div>
+
+
         </div>
-        <div>
-            <div>
-                <div id="camera-icon">
-                    <a class="camera_page" onclick="camera()"><img src="../static/img/camera2.png" width="80"
-                                                                   height="80" alt="">
-                    </a>
-                    </a>
+
+
+        <div class="footer_container col-md-12">
+            <div class="left-box" id="boxl">
+                <h1 id="left_box_text">안주추천</h1>
+                <img id="food1">
+            </div>
+            <div class="light-box">
+                막걸리 정보
+                <div id="mak_info_li">
+
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="section">
-        <input type="radio" name="slide" id="slide01" checked>
-        <input type="radio" name="slide" id="slide02">
-        <input type="radio" name="slide" id="slide03">
-        <input type="radio" name="slide" id="slide04">
-        <input type="radio" name="slide" id="slide05">
-        <div class="slidewrap">
-            <ul class="slidelist" id="detail-1">
-                <!-- 슬라이드 영역 -->
-                <li class="slideitem">
-                    <a>
-                        <div class="textbox">
-                            <h1 id="text_1"></h1>
-                        </div>
-                    </a>
-                </li>
-                <li class="slideitem">
-                    <a>
-                        <div class="textbox">
-                            <h1 id="text_2"></h1>
-                        </div>
-                    </a>
-                </li>
-                <li class="slideitem">
-                    <a>
-                        <div class="textbox">
-                            <h1 id="text_3">막걸리 추천</h1>
-                        </div>
-                    </a>
-                </li>
-                <li class="slideitem">
-                    <a>
-                        <div class="textbox">
-                            <h1 id="text_4">막걸리 추천</h1>
-                        </div>
-                    </a>
-                </li>
-                <li class="slideitem">
-                    <a>
-                        <div class="textbox">
-                            <h1 id="text_5">막걸리 추천</h1>
-                        </div>
-                    </a>
-                </li>
-                <li class="slideitem">
-                    <a>
-                        <div class="textbox">
-                            <h3>두번째 슬라이드</h3>
-                            <p>두번째 슬라이드 입니다.</p>
-                        </div>
-                        <img src="../static/img/slide.jpg">
-                    </a>
-                </li>
-
-                <!-- 좌,우 슬라이드 버튼 -->
-                <div class="slide-control">
-                    <div>
-                        <label for="slide05" class="left"></label>
-                        <label for="slide02" class="right"></label>
-                    </div>
-                    <div>
-                        <label for="slide01" class="left"></label>
-                        <label for="slide03" class="right"></label>
-                    </div>
-                    <div>
-                        <label for="slide02" class="left"></label>
-                        <label for="slide04" class="right"></label>
-                    </div>
-                    <div>
-                        <label for="slide03" class="left"></label>
-                        <label for="slide05" class="right"></label>
-                    </div>
-                    <div>
-                        <label for="slide04" class="left"></label>
-                        <label for="slide01" class="right"></label>
-                    </div>
-                </div>
-            </ul>
-            <!-- 페이징 -->
-            <ul class="slide-pagelist">
-                <li><label for="slide01"></label></li>
-                <li><label for="slide02"></label></li>
-                <li><label for="slide03"></label></li>
-                <li><label for="slide04"></label></li>
-                <li><label for="slide05"></label></li>
-            </ul>
-        </div>
-
-
-    </div>
-
 </div>
-
-<div class="left-box" id="boxl">
-    <h1 id="left_box_text">안주추천</h1>
-    <img id="food1">
-</div>
-<div class="light-box">
-    막걸리 정보
-    <div id="mak_info_li">
-
-    </div>
-</div>
-
 </body>
 </html>
