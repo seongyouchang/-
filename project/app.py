@@ -79,7 +79,7 @@ def join():
 def id_post():
     id_receive = request.form['id_give']
     id_list = list(db.User.find({}, {'_id': False}))
-
+    # db.User.find_one({'user_ID':id_receive})
     user_id = []
 
     for person in id_list:

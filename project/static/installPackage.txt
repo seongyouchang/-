@@ -1,0 +1,7 @@
+requirements.txt
+
+구글링
+
+https://itholic.github.io/python-requirements/
+
+

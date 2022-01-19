@@ -10,8 +10,11 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-        let mak_id =0;
+        let mak_id = 0;
 
+        function main() {
+            location.href = '/';
+        }
     </script>
 </head>
 <style>
@@ -42,12 +45,18 @@
     }
 
     .col-md-12 .header #back {
-        width: 13%;
+        width: 10%;
+        height: 56%;
+    }
+
+    #back:hover {
+        opacity: 70%;
     }
 
     .col-md-12 .header #logo {
         width: 35%;
         margin-right: 32%;
+        cursor:pointer;
     }
 
     .col-md-12 .webcam {
@@ -78,7 +87,7 @@
         <div class="col-md-12">
             <div class="header">
                 <img onclick="window.history.back()" id='back' src="/static/back_icon.png">
-                <img id='logo' src='/static/logo-removebg-preview.png'>
+                <img id='logo' src='/static/logo-removebg-preview.png' onclick="main()">
             </div>
             <div class='webcam'>
                 <video id="video" width="100%" autoplay></video>
@@ -88,13 +97,14 @@
             <div class='predict'>
                 <p id="object">확인중...</p>
             </div>
-            <div class='bt' id = 'bt'>
+            <div class='bt' id='bt'>
                 <button type="button" onclick="location.href = '/comment?mak_id=' + mak_id" class="btn btn-warning">
-                    알아보기</button>
+                    알아보기
+                </button>
                 <button type="button" onClick="window.location.reload()" class="btn btn-warning">다시하기</button>
             </div>
             <div class='request'>
-               <p>확인이 안되시나요? 막걸리를 <a href="/request">추가 요청</a>해주세요!</p>
+                <p>확인이 안되시나요? 막걸리를 <a href="/request">추가 요청</a>해주세요!</p>
             </div>
 
         </div>
@@ -139,12 +149,12 @@
                 $('#object').append(`<h1>${data['msg']}</h1>`);
                 mak_id = data['mak_id']
                 console.log(mak_id)
-                if(parseInt(mak_id) == 0){
+                if (parseInt(mak_id) == 0) {
 
                     a.innerHTML = " <button type='button' onClick='window.location.reload()' class='btn btn-warning'>알아보기</button>\n" +
                         "                    <button type='button' onClick='window.location.reload()' class='btn btn-warning'>다시하기</button>"
 
-                }else {
+                } else {
                     a.innerHTML = " <button type='button' onclick=\"location.href = '/comment?mak_id=' + mak_id\" class='btn btn-warning'>알아보기</button>\n" +
                         "                    <button type='button' onClick='window.location.reload()' class='btn btn-warning'>다시하기</button>"
 
