@@ -5,12 +5,34 @@
     <title>Document</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!--    css추가-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+            integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--    css추가-->
     <link rel="stylesheet" href="/static/css/request.css">
 
 
-      <script>
+    <script>
+
+        $(function () {
+            $("#mak_file").on('change', function () {
+                readURL(this);
+                // console.log(this)
+            });
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                // console.log(input.files)
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    console.log(e)
+                    $('#preview-img').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         function request_button() {
             //userid, 막걸리명, 요청사항 필수입력
@@ -31,26 +53,41 @@
             } else {
                 let user_id = $('#user_id').val()
                 let mak_name = $('#mak_name').val()
-                let mak_file = $('#mak_file').val()
+                // console.log(mak_name)
+                let mak_file = $('#mak_file')[0].files[0]
+                // console.log($('#mak_file')[0])
+                // console.log(mak_file)
                 let request = $('#request').val()
+
+                let form_data = new FormData()
+
+                form_data.append("userid_give", user_id)
+                form_data.append("makname_give", mak_name)
+                form_data.append("makfile_give", mak_file)
+                form_data.append("request_give", request)
+
+                console.log(mak_file.name)
                 $.ajax({
                     type: "POST",
                     url: "/request",
-                    data: {'userid_give': user_id, 'makname_give': mak_name, 'makfile_give': mak_file, 'request_give': request},
+                    data: form_data,   //form형태로 저장소를 만듬
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     success: function (response) {
 
                         if(response['result']=='success') {  //본인의 id일경우 요청완료
 
                             alert(response["msg"])
-                            // location.href = "/"
+                            location.href = "/"
                         }
                         else if (response['result']=='check') { //본인의 id가 아닐경우
                             alert(response["msg"])
-                            // window.location.reload()
+                            window.location.reload()
                         }
                         else {
                             alert(response["msg"])  //로그인시간이 만료되었을경우
-                            // location.href = "/login"
+                            location.href = "/login"
                         }
                     }
                 });
@@ -58,20 +95,20 @@
         }
 
 
-
-
     </script>
 </head>
 <body>
     <div class="container contact">
         <div class="row">
-            <div class="col-md-12">
+            <div class="wrapper col-md-12">
                 <div class="header">
                     <div class="back-img">
-                    <img src="../static/back_icon.png" alt="backbutton" width="80px" height="50px">
+                        <a href="javascript:history.back()">
+                            <img src="../static/back_icon.png" alt="backbutton" width="80px" height="50px">
+                        </a>
                     </div>
-                    <div  class="logo-img" >
-                        <img src="../static/logo-removebg-preview.png" alt="logo" height="130px">
+                    <div class="logo-img" >
+                        <img src="../static/logo-removebg-preview.png"  alt="logo" height="130px">
                     </div>
 
                 </div>
@@ -86,15 +123,23 @@
                         <div id="input_name" class="content">
                             <input id="mak_name" type="text" placeholder="막걸리명을 입력하세요."/>
                             <input id="mak_file" type="file" name="reviewImg" id="reviewImageFileOpenInput" accept="image/png, image/jpeg">
+                            <div class="wrap">
+                                <img id="preview-img" class="img" alt="사진 미리보기" >
+
+                            </div>
                         </div>
                         <div class="content">
                             <textarea id="request" class="input_request" type="text" placeholder="요청사항을 적어주세요."></textarea>
                         </div>
+                        <div class="footer">
+                            <button onclick="request_button()" id="submit" type="button" class="btn btn-info">제출
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="footer">
-                    <button onclick="request_button()" id="submit" type="button" class="btn btn-info" >제출</button>
-                </div>
+<!--?                <div class="footer">-->
+<!--?                    <button onclick="request_button()" id="submit" type="button" class="btn btn-info" >제출</button>-->
+<!--?                </div>-->
 
             </div>
         </div>

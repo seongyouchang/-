@@ -19,7 +19,7 @@ import requests
 
 SECRET_KEY = '333'
 app = Flask(__name__)
-model = tf.keras.models.load_model('./model/keras_model.h5')
+model = tf.keras.models.load_model('keras_model.h5')
 # MongoDB 연결
 from pymongo import MongoClient
 
@@ -208,24 +208,32 @@ def requst():
 
 @app.route("/request", methods=["POST"])
 def request_post():
+    print(1)
     userid = request.form['userid_give']
     makname = request.form['makname_give']
-    makfile = request.form['makfile_give']
+    makfile = request.files['makfile_give']
+    # print(type(makfile))
     request_receive = request.form['request_give']
     # print(request_receive)
     #쿠키가져와 로그인한 id와 id입력란에 적은 id가 일치한지 확인
     token_receive = request.cookies.get('mytoken')
+    #가져온 파일 저장
+    filename=makfile.filename #filename만 가져오기
+    print(filename)
+    makfile.save(f'static/request_img/{filename}')  #우리 데이터에 경로지정하여 사진 저장
+
     # print(token_receive)
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.User.find_one({"user_name": payload['user_id']},{'_id': 0})
+        user_info = db.User.find_one({"user_id": payload['user_id']},{'_id': 0})
         # print(user_info['user_name'])
         # 같을경우 db에 저장후 완료처리
-        if user_info['user_name']==userid:
+
+        if user_info['user_id']==userid:
             doc = {
                 "userid": userid,
                 "makname": makname,
-                "makfile": makfile,
+                "makfileurl": filename,
                 "request": request_receive
             }
             db.Recommend.insert_one(doc)

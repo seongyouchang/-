@@ -1,5 +1,5 @@
  *{
-            /*border:10px solid black;*/
+            /*border:1px solid black;*/
         }
 
         @font-face {
@@ -8,16 +8,18 @@
             font-weight: normal;
             font-style: normal;
         }
+
         body {
             background-color: blanchedalmond;
+            /*background-color: red;*/
         }
         .contact {
             padding: 4%;
             height: 400px;
         }
-        .col-md-12 {
+        .wrapper {
             /*height 주석 처리 하세요*/
-            /*height: 900px;*/
+            /*height:90%;*/
             background: #fff;
             padding: 3%;
             border-radius: 0.5rem;
@@ -51,7 +53,7 @@
             border-radius: 20px;
             /*border:2px solid gray;*/
             background-color: blanchedalmond;
-            height:80%;
+            /*height:100%;*/
             margin: 20px 100px;
             padding:30px 80px;
             display:flex;
@@ -80,3 +82,12 @@
             display:flex;
             justify-content: center;
         }
+        #preview-img{
+            width:220px;
+            height:220px;
+        }
+
+
+
+
+
